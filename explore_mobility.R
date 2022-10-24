@@ -1,4 +1,4 @@
-pacman::p_load(tidyverse,dplyr,ggplot2,readxl,zoo)
+pacman::p_load(tidyverse,dplyr,ggplot2,readxl,zoo,plotly,styler)
 
 # read_in_global <- read_csv("Global_Mobility_Report.csv") %>%
 #   rename(retail_rec = "retail_and_recreation_percent_change_from_baseline",
@@ -11,41 +11,69 @@ pacman::p_load(tidyverse,dplyr,ggplot2,readxl,zoo)
 # glimpse(read_in_global)
 
 home <- read_in_global %>%
-  filter(country_region_code == "GB")
+  filter(is.na(sub_region_1),
+        country_region_code == "GB") %>%
+  select(date, transit_stations, workplaces)
+
+write_csv(home, "GB_data.csv")
 
 
-#  Then-and-now
+#  Then-and-now - look at the last week in the dataset
 
 range <- c(max(read_in_global$date), min(read_in_global$date))
 
-seq_1 <- seq(min(read_in_global$date), by = "day", length.out = 7)
-seq_2 <- seq(max(read_in_global$date)-6, by = "day", length.out = 7)
+seq_2 <- seq(max(read_in_global$date)-28, by = "day", length.out = 14)
 
-compare_then_and_now <- home %>%
-  mutate(range = ifelse(date %in% seq_1, "first_week",
-                        ifelse(date %in% seq_2, "last_week", ""))) %>%
-  filter(is.na(sub_region_1)) %>%
+compare_then_and_now <- read_in_global %>%
+  filter(is.na(sub_region_1),
+         # date %in% seq_2,
+         country_region_code %in% countries_to_compare) %>%
   select(date,
+         country_region,
          retail_rec,
          grocery_pharm,
          parks,
          transit_stations,
          workplaces,
-         residential,
-         range) %>%
-  pivot_longer(!c(date, range), names_to = 'place', values_to = 'value')
+         residential) %>%
+  pivot_longer(!c(date, country_region), names_to = 'place', values_to = 'value') %>%
+  group_by(country_region, place) %>%
+  group_by(place) %>%
+  mutate(rollum = rollmean(value, k = 7, fill = NA))
+
 
 chart_then_and_now <- ggplot(compare_then_and_now %>%
-                               filter(range %in% c("first_week", "last_week")) %>%
-                               group_by(range, place) %>%
-                               summarise(mean = mean(value)),
-                             aes(x = place,
-                                 y = mean)) +
-  geom_col()+
-  theme(axis.text.x = element_text(angle = 45)) +
-  facet_wrap(~ range)
+                               filter(country_region == "Australia",
+                                      place != "parks") %>%
+                               mutate(x = place,
+                                      id = row_number()),
+                             aes(x = x,
+                                 y = rollum,
+                                 colour = place,
+                                 frame = id)) +
+  geom_bar(stat = "identity", position = "identity")
+  # geom_hline(yintercept = 100) +
+  # coord_polar()
+  # facet_wrap(~ country_region)
+
+ggplotly(chart_then_and_now)
+
+df <- data.frame(
+  x = c(1,2,3,4),
+  y = c(1,2,3,4),
+  f = c(1,2,3,4)
+)
+
+p <- ggplot(df, aes(x, y)) +
+  geom_point(aes(frame = f))
+
+ggplotly(p)
+
+    # theme(axis.text.x = element_text(angle = 45))
 
 chart_then_and_now
+
+
 
 
 # rolling mean
@@ -72,3 +100,33 @@ timeline_roll <- ggplot(rollum,
   geom_line()
 
 timeline_roll
+
+
+
+countries_to_compare <- c("GB", "NZ", "AU", "FR", "DE", "ES")
+
+compare_work_transport <- read_in_global %>%
+  filter(is.na(sub_region_1),
+         country_region_code %in% countries_to_compare,
+         date %in% seq_2) %>%
+  select(date,
+         country_region,
+         workplaces,
+         transit_stations) %>%
+  group_by(country_region) %>%
+  summarise(mean_work = mean(workplaces),
+            mean_transit = mean(transit_stations))
+# %>%
+  # pivot_longer(!c(date, country_region), names_to = 'place', values_to = 'value') %>%
+  # filter(place %in% c("transit_stations", "workplaces"))
+
+compare_work_transit_chart <- ggplot(compare_work_transport,
+                                     aes(x = mean_work,
+                                         y = mean_transit,
+                                         label = country_region)) +
+  geom_point() +
+  geom_text() +
+  geom_vline(xintercept = 0) +
+  geom_hline(yintercept = 0)
+
+compare_work_transit_chart
