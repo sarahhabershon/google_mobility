@@ -2,7 +2,7 @@ pacman::p_load(tidyverse,dplyr,ggplot2,readxl,zoo,plotly,styler)
 
 
 countries_to_compare <- c("GB", "NZ", "AU", "FR", "DE", "ES")
-
+# 
 # read_in_global <- read_csv("Global_Mobility_Report.csv") %>%
 #   rename(retail_rec = "retail_and_recreation_percent_change_from_baseline",
 #          grocery_pharm = "grocery_and_pharmacy_percent_change_from_baseline",
@@ -11,12 +11,18 @@ countries_to_compare <- c("GB", "NZ", "AU", "FR", "DE", "ES")
 #          workplaces = "workplaces_percent_change_from_baseline",
 #          residential = "residential_percent_change_from_baseline")
 
-# glimpse(read_in_global)
+glimpse(read_in_global)
 
 home <- read_in_global %>%
   filter(is.na(sub_region_1),
         country_region_code == "GB") %>%
-  select(date, transit_stations, workplaces)
+  select(date, transit_stations, workplaces) %>%
+  mutate(transit_stations = rollmean(100+transit_stations, k = 7, fill = NA),
+         workplaces = rollmean(100+workplaces, k = 7, fill = NA))
+
+
+
+home
 
 write_csv(home, "GB_data.csv")
 
@@ -92,6 +98,7 @@ timeline_roll <- ggplot(rollum,
   geom_line()
 
 timeline_roll
+
 
 
 
