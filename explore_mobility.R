@@ -1,5 +1,8 @@
 pacman::p_load(tidyverse,dplyr,ggplot2,readxl,zoo,plotly,styler)
 
+
+countries_to_compare <- c("GB", "NZ", "AU", "FR", "DE", "ES")
+
 # read_in_global <- read_csv("Global_Mobility_Report.csv") %>%
 #   rename(retail_rec = "retail_and_recreation_percent_change_from_baseline",
 #          grocery_pharm = "grocery_and_pharmacy_percent_change_from_baseline",
@@ -7,7 +10,7 @@ pacman::p_load(tidyverse,dplyr,ggplot2,readxl,zoo,plotly,styler)
 #          transit_stations = "transit_stations_percent_change_from_baseline",
 #          workplaces = "workplaces_percent_change_from_baseline",
 #          residential = "residential_percent_change_from_baseline")
-#
+
 # glimpse(read_in_global)
 
 home <- read_in_global %>%
@@ -56,20 +59,9 @@ chart_then_and_now <- ggplot(compare_then_and_now %>%
   # coord_polar()
   # facet_wrap(~ country_region)
 
-ggplotly(chart_then_and_now)
+# ggplotly(chart_then_and_now)
 
-df <- data.frame(
-  x = c(1,2,3,4),
-  y = c(1,2,3,4),
-  f = c(1,2,3,4)
-)
 
-p <- ggplot(df, aes(x, y)) +
-  geom_point(aes(frame = f))
-
-ggplotly(p)
-
-    # theme(axis.text.x = element_text(angle = 45))
 
 chart_then_and_now
 
@@ -103,7 +95,7 @@ timeline_roll
 
 
 
-countries_to_compare <- c("GB", "NZ", "AU", "FR", "DE", "ES")
+
 
 compare_work_transport <- read_in_global %>%
   filter(is.na(sub_region_1),
