@@ -2,7 +2,7 @@ pacman::p_load(tidyverse,dplyr,ggplot2,readxl,zoo,plotly,styler)
 
 
 countries_to_compare <- c("GB", "NZ", "AU", "FR", "DE", "ES")
-# 
+
 # read_in_global <- read_csv("Global_Mobility_Report.csv") %>%
 #   rename(retail_rec = "retail_and_recreation_percent_change_from_baseline",
 #          grocery_pharm = "grocery_and_pharmacy_percent_change_from_baseline",
@@ -10,21 +10,25 @@ countries_to_compare <- c("GB", "NZ", "AU", "FR", "DE", "ES")
 #          transit_stations = "transit_stations_percent_change_from_baseline",
 #          workplaces = "workplaces_percent_change_from_baseline",
 #          residential = "residential_percent_change_from_baseline")
-
-glimpse(read_in_global)
+# 
+# glimpse(read_in_global)
 
 home <- read_in_global %>%
   filter(is.na(sub_region_1),
         country_region_code == "GB") %>%
-  select(date, transit_stations, workplaces) %>%
+  select(transit_stations, workplaces, grocery_pharm, residential, retail_rec) %>%
   mutate(transit_stations = rollmean(100+transit_stations, k = 7, fill = NA),
-         workplaces = rollmean(100+workplaces, k = 7, fill = NA))
+         workplaces = rollmean(100+workplaces, k = 7, fill = NA),
+         retail_rec = rollmean(100+retail_rec, k = 7, fill = NA),
+         grocery_pharm = rollmean(100+grocery_pharm, k = 7, fill = NA),
+         residential = rollmean(100+residential, k = 7, fill = NA)) %>%
+  drop_na()
 
-
-
+one_dimension <- home %>%
+  tail(10)
 home
 
-write_csv(home, "GB_data.csv")
+write_csv(one_dimension, "GB_data.csv")
 
 
 #  Then-and-now - look at the last week in the dataset
