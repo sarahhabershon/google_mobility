@@ -1,22 +1,22 @@
-pacman::p_load(tidyverse,dplyr,ggplot2,readxl,zoo,plotly,styler)
+pacman::p_load(tidyverse,dplyr,ggplot2,readxl,zoo,plotly,styler,jsonlite)
 
 
 countries_to_compare <- c("GB", "NZ", "AU", "FR", "DE", "ES")
 
-# read_in_global <- read_csv("Global_Mobility_Report.csv") %>%
-#   rename(retail_rec = "retail_and_recreation_percent_change_from_baseline",
-#          grocery_pharm = "grocery_and_pharmacy_percent_change_from_baseline",
-#          parks = "parks_percent_change_from_baseline",
-#          transit_stations = "transit_stations_percent_change_from_baseline",
-#          workplaces = "workplaces_percent_change_from_baseline",
-#          residential = "residential_percent_change_from_baseline")
-# 
-# glimpse(read_in_global)
+read_in_global <- read_csv("Global_Mobility_Report.csv") %>%
+  rename(retail_rec = "retail_and_recreation_percent_change_from_baseline",
+         grocery_pharm = "grocery_and_pharmacy_percent_change_from_baseline",
+         parks = "parks_percent_change_from_baseline",
+         transit_stations = "transit_stations_percent_change_from_baseline",
+         workplaces = "workplaces_percent_change_from_baseline",
+         residential = "residential_percent_change_from_baseline")
+
+glimpse(read_in_global)
 
 home <- read_in_global %>%
   filter(is.na(sub_region_1),
         country_region_code == "GB") %>%
-  select(transit_stations, workplaces, grocery_pharm, residential, retail_rec) %>%
+  select(date, transit_stations, workplaces, grocery_pharm, residential, retail_rec) %>%
   mutate(transit_stations = rollmean(100+transit_stations, k = 7, fill = NA),
          workplaces = rollmean(100+workplaces, k = 7, fill = NA),
          retail_rec = rollmean(100+retail_rec, k = 7, fill = NA),
@@ -25,10 +25,58 @@ home <- read_in_global %>%
   drop_na()
 
 one_dimension <- home %>%
-  tail(10)
+  head(100)
 home
 
-write_csv(one_dimension, "GB_data.csv")
+
+home_long <-
+  one_dimension %>%
+  pivot_longer(!date, names_to = "place", values_to = "value") %>%
+  select(place, date, value)
+
+x <- toJSON(home_long, pretty=TRUE, flatten=TRUE, auto_unbox=FALSE)
+cat(x)
+
+home %>% 
+  group_by(date) %>%
+  summarise(across(everything(), list), .groups = "drop") %>% 
+  # nest(places = !date) %>%
+  jsonlite::toJSON(pretty=TRUE, auto_unbox=TRUE)
+
+# this one
+json <- home_long %>% 
+  group_by(place, date) %>%
+  summarise(across(everything(), list), .groups = "drop") %>% 
+  nest(item = !place)
+
+
+write(jsonlite::toJSON(json, pretty=TRUE, auto_unbox=TRUE), "json.json")
+
+
+write_csv(home_long, "GB_data_head_long.csv")
+
+data_check <- ggplot(home_long,
+                     aes(x = date,
+                         y = value,
+                         colour = place)) +
+  geom_line()
+
+data_check
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #  Then-and-now - look at the last week in the dataset
