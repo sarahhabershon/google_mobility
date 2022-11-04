@@ -20,7 +20,7 @@ let startDate = "Tue Feb 18 2020";
 
 
 $(document).ready(function () {
-  d3.csv("GB_data_head_long.csv", dataPrep).then(function (data) {
+  d3.csv("GB_data_long.csv", dataPrep).then(function (data) {
     console.log(data);
      // create an array of unique dates to iterate over for the animation
     let uniqueDates = Array.from(new Set(data.map((d) => d.date)))
@@ -115,25 +115,51 @@ $(document).ready(function () {
 
     let path = svg
       .append("path")
-      .attr("fill", "lightsteelblue")
-      .attr("fill-opacity", 0.2)
-      .attr("d", area.innerRadius(0).outerRadius((d) => y(d.value))(currentData))
-      .join("path")
+      .attr("fill", "#154c79")
+      .attr("fill-opacity", 0.6)
+      .attr(
+        "d",
+        area.innerRadius(0).outerRadius((d) => y(d.value))(currentData)
+      )
+      .join("path");
 
+    let i = 0
 
-      for (let i = 0; i < uniqueDates.length; i++) {
-        currentData = dataAt(uniqueDates[i]);
-        console.log("poo");
-        console.log(currentData);
-
+    let update = function(){
         path
           .transition()
           .duration(400)
           .attr(
             "d",
-            area.innerRadius(0).outerRadius((d) => y(d.value))(currentData)
+            area.innerRadius(0).outerRadius((d,i) => y(d.value))(
+              dataAt(uniqueDates[i])
+            )
           );
+
+          i++
       }
+
+    setInterval(function () {update()}, 70);
+
+
+    //   for (let i = 0; i < uniqueDates.length; i++) {
+    //     const start = performance.now();
+    //     console.log(start);
+    //     currentData = dataAt(uniqueDates[i]);
+    //     console.log("poo");
+    //     console.log(currentData);
+
+    //     path
+    //       .transition()
+    //       .duration(400)
+    //       .attr(
+    //         "d",
+    //         area.innerRadius(0).outerRadius((d) => y(d.value))(currentData)
+    //       );
+
+    //       const end = performance.now();
+    //       console.log(end);
+    //   }
 
 
 
