@@ -22,16 +22,16 @@ let startDate = "Tue Feb 18 2020";
 $(document).ready(function () {
   d3.csv("GB_data_long.csv", dataPrep).then(function (data) {
     console.log(data);
-     // create an array of unique dates to iterate over for the animation
-    let uniqueDates = Array.from(new Set(data.map((d) => d.date)))
+    // create an array of unique dates to iterate over for the animation
+    let uniqueDates = Array.from(new Set(data.map((d) => d.date)));
 
     // filter the dataset by date
-    let dataAt = function(thisDate){
-        let x = data.filter((d) => d.date === thisDate)
-        return x
-    }
+    let dataAt = function (thisDate) {
+      let x = data.filter((d) => d.date === thisDate);
+      return x;
+    };
 
-    // set the initial frame to the first date in the unique dates array 
+    // set the initial frame to the first date in the unique dates array
     let currentData = dataAt(uniqueDates[0]);
 
     // set up the axes
@@ -43,10 +43,8 @@ $(document).ready(function () {
 
     let y = d3
       .scaleLinear()
-      .domain([
-        0, d3.max(data, (d) => d.value)])
+      .domain([0, d3.max(data, (d) => d.value)])
       .range([innerRadius, outerRadius]);
-
 
     let xAxis = (g) =>
       g.attr("text-anchor", "middle").call((g) =>
@@ -58,11 +56,11 @@ $(document).ready(function () {
           .attr(
             "transform",
             (d) => `
-          rotate(${((x(d.place) + x.bandwidth() / 2) * 180) / Math.PI +235})
+          rotate(${((x(d.place) + x.bandwidth() / 2) * 180) / Math.PI + 235})
           translate(${outerRadius},0)
         `
           )
-        .call((g) => g.append("line").attr("x2", -500).attr("stroke", "#000"))
+          .call((g) => g.append("line").attr("x2", -500).attr("stroke", "#000"))
           .call((g) =>
             g
               .append("text")
@@ -107,7 +105,6 @@ $(document).ready(function () {
 
     svg.append("g").call(yAxis);
 
-    
     let area = d3
       .areaRadial()
       .curve(d3.curveCardinalClosed.tension(0))
@@ -123,45 +120,39 @@ $(document).ready(function () {
       )
       .join("path");
 
-    let i = 0
+    let i = 0;
 
-    let update = function(){
-        path
-          .transition()
-          .duration(400)
-          .attr(
-            "d",
-            area.innerRadius(0).outerRadius((d,i) => y(d.value))(
-              dataAt(uniqueDates[i])
-            )
-          );
+    let update = function () {
+      path
+        .transition()
+        .duration(400)
+        .attr(
+          "d",
+          area.innerRadius(0).outerRadius((d, i) => y(d.value))(
+            dataAt(uniqueDates[i])
+          )
+        );
 
-          i++
-      }
+      i++;
+    };
 
-    setInterval(function () {update()}, 70);
+    setInterval(function () {
+      update();
+    }, 70);
 
+    //    https://d3-graph-gallery.com/graph/density_slider.html
 
-    //   for (let i = 0; i < uniqueDates.length; i++) {
-    //     const start = performance.now();
-    //     console.log(start);
-    //     currentData = dataAt(uniqueDates[i]);
-    //     console.log("poo");
-    //     console.log(currentData);
+    console.log(uniqueDates.length)
 
-    //     path
-    //       .transition()
-    //       .duration(400)
-    //       .attr(
-    //         "d",
-    //         area.innerRadius(0).outerRadius((d) => y(d.value))(currentData)
-    //       );
-
-    //       const end = performance.now();
-    //       console.log(end);
-    //   }
-
-
+    d3
+      .select("#mySlider")
+      .attr("min", 0)
+      .attr("max", uniqueDates.length-1)
+      .attr("value", 0)
+      .on("change", function (d) {
+      i = this.value;
+      console.log(uniqueDates[i]);
+    });
 
   });
 
