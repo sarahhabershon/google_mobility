@@ -1,4 +1,4 @@
-pacman::p_load(tidyverse,dplyr,ggplot2,readxl,zoo,plotly,styler,jsonlite)
+pacman::p_load(tidyverse,dplyr,ggplot2,readxl,zoo,plotly,styler,jsonlite,anytime)
 
 
 countries_to_compare <- c("GB", "NZ", "AU", "FR", "DE", "ES")
@@ -24,36 +24,42 @@ home <- read_in_global %>%
          residential = rollmean(100+residential, k = 7, fill = NA)) %>%
   drop_na()
 
-one_dimension <- home %>%
-  head(100)
-home
+risk_index_in <- read_csv("https://raw.githubusercontent.com/OxCGRT/covid-policy-tracker/master/data/United%20Kingdom/OxCGRT_GBR_latest.csv") 
+
+
+risk_index <- risk_index_in %>% 
+  select(Date, RegionCode, StringencyIndex_Average_ForDisplay) %>%
+  filter(is.na(RegionCode)) %>%
+  mutate(date = anydate(Date))
 
 
 home_long <-
-  one_dimension %>%
+  home %>%
   pivot_longer(!date, names_to = "place", values_to = "value") %>%
-  select(place, date, value)
+  select(place, date, value) %>%
+  left_join(risk_index) %>%
+  select(!c(RegionCode, Date))
+
 
 x <- toJSON(home_long, pretty=TRUE, flatten=TRUE, auto_unbox=FALSE)
 cat(x)
 
-home %>% 
+home_long %>% 
   group_by(date) %>%
   summarise(across(everything(), list), .groups = "drop") %>% 
-  # nest(places = !date) %>%
+  # nest(places = !StringencyIndex_Average_ForDisplay) %>%
   jsonlite::toJSON(pretty=TRUE, auto_unbox=TRUE)
 
 # this one
-json <- home_long %>% 
-  group_by(place, date) %>%
-  summarise(across(everything(), list), .groups = "drop") %>% 
-  nest(item = !place)
+home_long_json <- home_long %>% 
+  nest(items = c(date, StringencyIndex_Average_ForDisplay))
 
 
-write(jsonlite::toJSON(json, pretty=TRUE, auto_unbox=TRUE), "json.json")
+
+write(jsonlite::toJSON(home_long_json, pretty=TRUE, auto_unbox=TRUE), "long_json.json")
 
 
-write_csv(home_long, "GB_data_head_long.csv")
+write_csv(home_long, "GB_data_long_test.csv")
 
 data_check <- ggplot(home_long,
                      aes(x = date,
