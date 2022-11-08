@@ -110,7 +110,6 @@ footer {
 }
 
 
-
 @media only screen and (min-width : 480px) {
 
 .row.content {
@@ -118,10 +117,6 @@ footer {
   margin-top: 0;
 }
 
-.vizcol {
-    height: 40%;
-    background-color: white;
-}
 
 .textbar {
   display: block;
@@ -129,6 +124,8 @@ footer {
 }
 
 #vizdiv {
+  display: block;
+  height: 50%;
   margin-top: 0;
 }
 
@@ -140,7 +137,7 @@ body {
 
 h1 {
     font-family: 'League Gothic';
-    font-size: 6vw;
+    font-size: 8vw;
     margin-top: 30%;
 }
 
@@ -150,7 +147,7 @@ h1 {
 }
 
 .labels {
-  font-size: 2vw;
+  font-size: 10px;
 }
 
 }
