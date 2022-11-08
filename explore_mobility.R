@@ -56,7 +56,7 @@ home_long_json <- home_long %>%
 
 
 
-write(jsonlite::toJSON(home_long_json, pretty=TRUE, auto_unbox=TRUE), "long_json.json")
+write(jsonlite::toJSON(home_long_json, pretty=TRUE), "long_json.json")
 
 
 write_csv(home_long, "GB_data_long_test.csv")

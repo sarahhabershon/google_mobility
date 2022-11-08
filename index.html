@@ -1,27 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Title</title>
-    <!link rel="stylesheet" type="text/css" href="style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
- 	  <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
-    <script type="text/javascript" src="script4.js"></script>
- 	  
-  </head>
+<head>
+  <title>Googly Moobs</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <title>Title</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href='https://fonts.googleapis.com/css?family=League Gothic' rel='stylesheet'>
+  <link href='https://fonts.googleapis.com/css?family=Lora' rel='stylesheet'>
+  <link rel="stylesheet" type="text/css" href="normalize.css">
+  <link rel="stylesheet" type="text/css" href="harry_styles.css">
+   <script src="https://d3js.org/d3.v7.min.js"></script>
+   <script type="text/javascript" src="script4.js"></script>
+</head>
 <body>
-  <div> 
-    <h1>Shrinky-dink</h1>
-    <p>Javascript can eat a bowl of dicks</p>
-  </div>
+<div class="container-fluid">
+  <row>
+    <div class="row content">
+      <div class="col-sm-9 col-sm-push-3 vizcol" id = "vizcol">
+        <div id = "vizdiv">
+        </div>
+      </div>
+      <div class="col-sm-3 col-sm-pull-9 textbar" id = "textbar">
+        <h1>Shrinking Spheres</h4>
+        <p>Amongst the many contractions sparked by the COVID-19 pandemic was the shrinking of the public domain.</p>
+        <div id="dateLabel"></div>
+        <div class="slidecontainer">
+          <input type="range" class="slider" id="mySlider" step="20">
+        </div>
+      </div>
+    </div>
+  </row>
+</div>
 
-
-
-  <div id = "div_a"></div>
-  <input type="range" name="mySlider" id=mySlider>
-
-
+<!-- <footer class="container-fluid" id="footer">
+  <p>Sources: <a href="https://www.google.com/covid19/mobility/"> Google Mobility Reports</a> and the <a href="https://www.bsg.ox.ac.uk/research/covid-19-government-response-tracker">Oxford Covid-19 Government Response Tracker</a></p>
+</footer> -->
 </body>
-
 </html>

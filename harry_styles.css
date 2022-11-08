@@ -1,0 +1,156 @@
+
+html {
+    min-height: 100%;
+  }
+
+
+/* text */
+
+
+body {
+    font-family: 'Lora';
+    font-size: 4vw;
+    text-align: center;
+}
+
+h1 {
+    font-family: 'League Gothic';
+    font-size:15vw;
+    margin-top: 30;
+    margin-bottom: 0;
+}
+
+#dateLabel {
+  font-style: bold;
+  font-size: 6vw;
+}
+
+a:link {
+    color: white;
+  }
+
+  /* visited link */
+  a:visited {
+    color: lightblue;
+  }
+
+#footer {
+   position: fixed;
+   bottom: 0;
+   width: 100%;
+   height: 10%;   /* Height of the footer */
+}
+
+
+/* Set height of the grid so .sidenav can be 100% (adjust if needed) */
+.row.content {
+  height: 100vh;
+  margin-top: 10%;;
+}
+
+.vizcol {
+    height: 50%;
+    background-color: white;
+}
+
+.textbar {
+  display: block;
+  height: 30%;
+}
+
+#vizdiv {
+  margin-top: 20%;
+}
+
+footer {
+    background-color: rgb(43, 150, 180);
+    color: white;
+    padding: 10px;
+}
+
+/* On small screens, set height to 'auto' */
+/* @media screen and (max-width: 767px) {
+  .textbar {
+    height: auto;
+    padding: 15px;
+    }
+  
+  .row.content {height: 80vh;} 
+} */
+
+/* slider */
+
+.slidecontainer {
+  width: 100%;
+  padding: 5%;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 25px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  background: #f0f7fa;
+  cursor: pointer;
+}
+
+
+
+@media only screen and (min-width : 480px) {
+
+.row.content {
+  height: 100vh;
+  margin-top: 0;
+}
+
+.vizcol {
+    height: 40%;
+    background-color: white;
+}
+
+.textbar {
+  display: block;
+  height: 100%;
+}
+
+#vizdiv {
+  margin-top: 0;
+}
+
+body {
+    font-family: 'Lora';
+    font-size: 2vw;
+    text-align: left;
+}
+
+h1 {
+    font-family: 'League Gothic';
+    font-size: 6vw;
+    margin-top: 30%;
+}
+
+#dateLabel {
+  font-style: bold;
+  font-size: 20px;;
+}
+
+.labels {
+  font-size: 2vw;
+}
+
+}

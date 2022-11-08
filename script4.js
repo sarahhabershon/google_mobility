@@ -1,3 +1,5 @@
+// python -m http.server
+
 let parseTime = d3.timeParse("%Y-%m-%d");
 let dateStringency = [];
 
@@ -15,17 +17,20 @@ dataPrep = function (d) {
   };
 };
 
-// set the dimension variables
-let width = 1000;
-let height = width;
-let margin = 10;
-let innerRadius = 0;
-let outerRadius = width / 2 - margin;
-let startDate = "Tue Feb 18 2020";
-
 $(document).ready(function () {
   d3.csv("GB_data_long.csv", dataPrep).then(function (data) {
     console.log(data);
+
+    // set the dimension variables
+    let height = document.querySelector("#vizcol").offsetHeight;
+    let width = height;
+    let margin = 30;
+    let innerRadius = 0;
+    let outerRadius = width / 2 - margin;
+    let startDate = "Tue Feb 18 2020";
+
+    console.log("poo");
+
     // create an array of unique dates to iterate over for the animation
     // let uniqueDates = Array.from(new Set(data.map((d) => d.date)));
 
@@ -49,8 +54,12 @@ $(document).ready(function () {
 
     let colour = d3
       .scaleSequential()
-      .domain([5, 45])
+      .domain([0, 45])
       .interpolator(d3.interpolatePuBu);
+
+    // Legend(d3.scaleSequential([5, 45], d3.interpolatePuBu), {
+    //   title: "Response Stringency Index",
+    // });
 
     // set up the axes
     x = d3
@@ -78,16 +87,17 @@ $(document).ready(function () {
           translate(${outerRadius},0)
         `
           )
-          .call((g) => g.append("line").attr("x2", -500).attr("stroke", "#000"))
+          // .call((g) => g.append("line").attr("x2", -500).attr("stroke", "#000"))
           .call((g) =>
             g
               .append("text")
-              .attr("transform", (d) =>
-                (x(d.place) + x.bandwidth() / 2 + Math.PI / 2) % (2 * Math.PI) <
-                Math.PI
-                  ? "rotate(90) translate(0,16)"
-                  : "rotate(-90) translate(0,-9)"
-              )
+              .classed("labels", true)
+              // .attr("transform", (d) =>
+              //   (x(d.place) + x.bandwidth() / 2 + Math.PI / 2) % (2 * Math.PI) <
+              //   Math.PI
+              //     ? "rotate(90) translate(0,16)"
+              //     : "rotate(-90) translate(0,-9)"
+              // )
               .text((d) => d.place)
           )
       );
@@ -96,7 +106,6 @@ $(document).ready(function () {
       g
         .attr("text-anchor", "middle")
         .attr("font-family", "sans-serif")
-        .attr("font-size", 10)
         .call((g) =>
           g
             .selectAll("g")
@@ -107,13 +116,13 @@ $(document).ready(function () {
               g
                 .append("circle")
                 .attr("stroke", "#000")
-                .attr("stroke-opacity", 0.9)
+                .attr("stroke-opacity", 0.1)
                 .attr("r", y)
             )
-        );
+        ); 
 
     let svg = d3
-      .select("body")
+      .select("#vizdiv")
       .append("svg")
       .attr("viewBox", [-width / 2, -height / 2, width, height])
       .attr("stroke-linejoin", "round")
@@ -140,14 +149,12 @@ $(document).ready(function () {
       )
       .join("path");
 
-    let label = d3
-      .select("div")
+    let dateLabel = d3
+      .select("#dateLabel")
       .append("p")
-      .text(function (d) {
-        return d;
-      });
+      .text(uniqueDateStringency[0][0]);
 
-    // let i = 0;
+    let iterator = 0;
 
     let update = function (i) {
       console.log(uniqueDateStringency[i][0]);
@@ -162,17 +169,18 @@ $(document).ready(function () {
           )
         )
         .attr("fill", function () {
-          // right now that's changing in response to the iteration. Change it to change in response to a value.
           return colour(uniqueDateStringency[i][1]);
         });
 
-      label.text(uniqueDateStringency[i][0]);
+      dateLabel.text(uniqueDateStringency[i][0]);
 
-      //   i++;
+
+        // iterator++;
     };
+
     // setInterval(function () {
-    //   update();
-    // }, 70);
+    //   update(iterator);
+    // }, 50);
 
     //    https://d3-graph-gallery.com/graph/density_slider.html
 
@@ -180,7 +188,7 @@ $(document).ready(function () {
       .attr("min", 0)
       .attr("max", uniqueDateStringency.length - 1)
       .attr("value", 0)
-      .on("change", function (d) {
+      .on("input", function (d) {
         i = this.value;
         console.log(i);
         update(i);
