@@ -21,7 +21,6 @@ $(document).ready(function () {
   d3.csv("GB_data_long.csv", dataPrep).then(function (data) {
     console.log(dateStringency);
 
-
     // set the dimension variables
     let height = document.querySelector("#vizcol").offsetHeight;
     let width = height;
@@ -55,6 +54,24 @@ $(document).ready(function () {
       .scaleSequential()
       .domain([0, 45])
       .interpolator(d3.interpolatePuBu);
+
+    let testsvg = d3.select("#testsvg")
+    
+      testsvg.selectAll("rect")
+      .data(dateStringency)
+      .enter()
+      .append("rect")
+        .attr("x", function(d, i) { return 800/dateStringency.length*i})
+        .attr("y", function(d, i) { return 1})
+        // .attr("rx", )
+        // .attr("ry", 4)
+        .attr("width", function(d) {return 800/dateStringency.length} )
+        .attr("height", 35 )
+        .style("fill", function(d) { console.log(d[1]);
+          return colour(d[1])} )
+  
+  
+  
 
     // Legend(d3.scaleSequential([5, 45], d3.interpolatePuBu), {
     //   title: "Response Stringency Index",
@@ -187,6 +204,7 @@ $(document).ready(function () {
       .attr("min", 0)
       .attr("max", uniqueDateStringency.length - 1)
       .attr("value", 0)
+      .style("background", "#6BFF33")
       .on("input", function (d) {
         i = this.value;
         console.log(i);
