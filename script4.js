@@ -19,7 +19,8 @@ dataPrep = function (d) {
 
 $(document).ready(function () {
   d3.csv("GB_data_long.csv", dataPrep).then(function (data) {
-    console.log(data);
+    console.log(dateStringency);
+
 
     // set the dimension variables
     let height = document.querySelector("#vizcol").offsetHeight;
@@ -28,8 +29,6 @@ $(document).ready(function () {
     let innerRadius = 0;
     let outerRadius = width / 2 - margin;
     let startDate = "Tue Feb 18 2020";
-
-    console.log("poo");
 
     // create an array of unique dates to iterate over for the animation
     // let uniqueDates = Array.from(new Set(data.map((d) => d.date)));
@@ -41,7 +40,7 @@ $(document).ready(function () {
     console.log(dateStringency);
     console.log(uniqueDateStringency);
 
-    // filter the dataset by date
+    // filter the dataset by date to get iterable chunks
     let dataAt = function (thisDate) {
       console.log(thisDate);
       let x = data.filter((d) => d.date === thisDate);
@@ -49,7 +48,7 @@ $(document).ready(function () {
     };
 
     // set the initial frame to the first date in the unique dates array
-    let currentData = dataAt(uniqueDateStringency[0][0]);
+    let currentData = dataAt(startDate);
     console.log(currentData);
 
     let colour = d3
