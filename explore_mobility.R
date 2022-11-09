@@ -41,6 +41,8 @@ home_long <-
   select(!c(RegionCode, Date))
 
 
+
+
 x <- toJSON(home_long, pretty=TRUE, flatten=TRUE, auto_unbox=FALSE)
 cat(x)
 

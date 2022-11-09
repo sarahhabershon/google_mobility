@@ -55,24 +55,6 @@ $(document).ready(function () {
       .domain([0, 45])
       .interpolator(d3.interpolatePuBu);
 
-    let testsvg = d3.select("#testsvg")
-    
-      testsvg.selectAll("rect")
-      .data(dateStringency)
-      .enter()
-      .append("rect")
-        .attr("x", function(d, i) { return 800/dateStringency.length*i})
-        .attr("y", function(d, i) { return 1})
-        // .attr("rx", )
-        // .attr("ry", 4)
-        .attr("width", function(d) {return 800/dateStringency.length} )
-        .attr("height", 35 )
-        .style("fill", function(d) { console.log(d[1]);
-          return colour(d[1])} )
-  
-  
-  
-
     // Legend(d3.scaleSequential([5, 45], d3.interpolatePuBu), {
     //   title: "Response Stringency Index",
     // });
@@ -199,6 +181,35 @@ $(document).ready(function () {
     // }, 50);
 
     //    https://d3-graph-gallery.com/graph/density_slider.html
+
+    let stringencySvg = d3.select("#stringencysvg");
+
+    let nodeWidth = document.querySelector(".slidecontainer").offsetWidth;
+    console.log(nodeWidth)
+
+    stringencySvg
+      .selectAll("rect")
+      .data(dateStringency)
+      .enter()
+      .append("rect")
+      .attr("x", function (d, i) {
+        return (nodeWidth / dateStringency.length) * i;
+      })
+      .attr("y", function (d, i) {
+        return 1;
+      })
+      // .attr("rx", )
+      // .attr("ry", 4)
+      .attr("width", function (d) {
+        return nodeWidth / dateStringency.length;
+      })
+      .attr("height", 10)
+      .style("fill", function (d) {
+        console.log(d[1]);
+        return colour(d[1]);
+      });
+  
+
 
     d3.select("#mySlider")
       .attr("min", 0)
