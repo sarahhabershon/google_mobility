@@ -36,8 +36,6 @@ $(document).ready(function () {
       new Set(dateStringency.map(JSON.stringify)),
       JSON.parse
     );
-    console.log(dateStringency);
-    console.log(uniqueDateStringency);
 
     // filter the dataset by date to get iterable chunks
     let dataAt = function (thisDate) {
@@ -85,17 +83,17 @@ $(document).ready(function () {
           translate(${outerRadius},0)
         `
           )
-          // .call((g) => g.append("line").attr("x2", -500).attr("stroke", "#000"))
           .call((g) =>
             g
               .append("text")
+              .attr("id", function(d,i) {return d.place})
               .classed("labels", true)
-              // .attr("transform", (d) =>
-              //   (x(d.place) + x.bandwidth() / 2 + Math.PI / 2) % (2 * Math.PI) <
-              //   Math.PI
-              //     ? "rotate(90) translate(0,16)"
-              //     : "rotate(-90) translate(0,-9)"
-              // )
+              .attr("transform", (d) =>
+                (x(d.place) + x.bandwidth() / 2 + Math.PI / 2) % (2 * Math.PI) <
+                Math.PI
+                  ? "rotate(90) translate(0,14)"
+                  : "rotate(-270) translate(0,9)"
+              )
               .text((d) => d.place)
           )
       );
@@ -181,37 +179,39 @@ $(document).ready(function () {
     // }, 50);
 
     //    https://d3-graph-gallery.com/graph/density_slider.html
-
+    let stringencyContainer = d3.select(".stringencyContainer");
     let stringencySvg = d3.select("#stringencysvg");
+    stringencyContainer.style.backgroundColor = "red";
 
-    let nodeWidth = document.querySelector(".stringencyContainer").offsetWidth;
-    console.log(nodeWidth)
+    let stringencyContainerWidth = document.querySelector(".stringencyContainer").offsetWidth;
+    // let thumbWidth = document.querySelector(".slider::-webkit-slider-thumb").offsetWidth;
+    
+
+    // var x = stringencySvg.getAttribute("width");
+    // console.log(x)
+    var svgHeight = x + 30;
+    console.log(stringencySvg)
 
     stringencySvg
-        .selectAll("rect")
-        .data(dateStringency)
-        .enter()
-        .append("rect")
-        .attr("x", function (d, i) {
-          console.log("poo")
-          return (nodeWidth / dateStringency.length) * i;
-        })
-        .attr("y", function (d, i) {
-          return 1;
-        })
-        // .attr("rx", )
-        // .attr("ry", 4)
-        .attr("width", function (d) {
-          return nodeWidth / dateStringency.length;
-        })
-        .attr("height", 20)
-        .style("fill", function (d) {
-          console.log(d[1]);
-          return colour(d[1]);
-        });
-
-
-
+      .selectAll("rect")
+      .attr("width", stringencyContainerWidth - 25)
+      .data(dateStringency)
+      .enter()
+      .append("rect")
+      .attr("x", function (d, i) {
+        return (stringencyContainerWidth / dateStringency.length) * i;
+      })
+      .attr("y", function (d, i) {
+        return 1;
+      })
+      .attr("width", function (d) {
+        return stringencyContainerWidth / dateStringency.length;
+      })
+      .attr("height", 20)
+      .style("fill", function (d) {
+        console.log(d[1]);
+        return colour(d[1]);
+      });
 
     d3.select("#mySlider")
       .attr("min", 0)
