@@ -188,34 +188,36 @@ $(document).ready(function () {
     console.log(nodeWidth)
 
     stringencySvg
-      .selectAll("rect")
-      .data(dateStringency)
-      .enter()
-      .append("rect")
-      .attr("x", function (d, i) {
-        return (nodeWidth / dateStringency.length) * i;
-      })
-      .attr("y", function (d, i) {
-        return 1;
-      })
-      // .attr("rx", )
-      // .attr("ry", 4)
-      .attr("width", function (d) {
-        return nodeWidth / dateStringency.length;
-      })
-      .attr("height", 10)
-      .style("fill", function (d) {
-        console.log(d[1]);
-        return colour(d[1]);
-      });
-  
+        .selectAll("rect")
+        .data(dateStringency)
+        .enter()
+        .append("rect")
+        .attr("x", function (d, i) {
+          return (nodeWidth / dateStringency.length) * i;
+        })
+        .attr("y", function (d, i) {
+          return 1;
+        })
+        // .attr("rx", )
+        // .attr("ry", 4)
+        .attr("width", function (d) {
+          return nodeWidth / dateStringency.length;
+        })
+        .attr("height", 20)
+        .style("fill", function (d) {
+          console.log(d[1]);
+          return colour(d[1]);
+        });
+
+
 
 
     d3.select("#mySlider")
       .attr("min", 0)
       .attr("max", uniqueDateStringency.length - 1)
       .attr("value", 0)
-      .style("background", "#6BFF33")
+      .style("background", function(){console.log(stringencySvg.node());
+      return stringencySvg.node();})
       .on("input", function (d) {
         i = this.value;
         console.log(i);

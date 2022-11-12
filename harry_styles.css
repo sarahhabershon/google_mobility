@@ -58,9 +58,9 @@ a:link {
   height: 30%;
 }
 
-#vizdiv {
+/* #vizdiv {
   margin-top: 20%;
-}
+} */
 
 footer {
     background-color: rgb(43, 150, 180);
@@ -80,8 +80,8 @@ footer {
 
 /* slider */
 
-.slidecontainer {
-  width: 100%;
+.stringencyContainer {
+  width: 80%;
   padding: 5%;
 }
 
@@ -89,7 +89,6 @@ footer {
   -webkit-appearance: none;
   width: 100%;
   height: 25px;
-  background: url(#testsvg);
   outline: none;
   opacity: 0.7;
   -webkit-transition: .2s;
@@ -103,15 +102,17 @@ footer {
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
+  background: url(assets/test_arrow-02-02.svg) center center no-repeat;
+  cursor: pointer;
   width: 25px;
   height: 25px;
-  background: #f0f7fa;
-  cursor: pointer;
+  /* background: red; */
 }
 
 #stringencysvg {
   width: 100%;
-  height: 20px;
+  height: 30px;
+  margin: 0 auto;
 }
 
 @media only screen and (min-width : 480px) {
@@ -129,19 +130,18 @@ footer {
 
 #vizdiv {
   display: block;
-  height: 50%;
   margin-top: 0;
 }
 
 body {
     font-family: 'Lora';
-    font-size: 2vw;
+    font-size: 1.5vw;
     text-align: left;
 }
 
 h1 {
     font-family: 'League Gothic';
-    font-size: 8vw;
+    font-size: 7vw;
     margin-top: 30%;
 }
 
