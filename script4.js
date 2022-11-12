@@ -184,7 +184,7 @@ $(document).ready(function () {
 
     let stringencySvg = d3.select("#stringencysvg");
 
-    let nodeWidth = document.querySelector(".slidecontainer").offsetWidth;
+    let nodeWidth = document.querySelector(".stringencyContainer").offsetWidth;
     console.log(nodeWidth)
 
     stringencySvg
@@ -193,6 +193,7 @@ $(document).ready(function () {
         .enter()
         .append("rect")
         .attr("x", function (d, i) {
+          console.log("poo")
           return (nodeWidth / dateStringency.length) * i;
         })
         .attr("y", function (d, i) {
