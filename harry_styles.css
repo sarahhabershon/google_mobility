@@ -109,9 +109,9 @@ footer {
 }
 
 #stringencysvg {
-  /* width: 100%; */
   height: 30px;
-  margin: 0 auto;
+  padding-left: 5%;
+  /* margin: 0 auto; */
 }
 
 @media only screen and (min-width : 480px) {
@@ -145,8 +145,9 @@ h1 {
 }
 
 #dateLabel {
+  font-family: 'League Gothic';
   font-style: bold;
-  font-size: 20px;;
+  font-size: 2vw;;
 }
 
 .labels {

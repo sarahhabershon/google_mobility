@@ -91,8 +91,8 @@ $(document).ready(function () {
               .attr("transform", (d) =>
                 (x(d.place) + x.bandwidth() / 2 + Math.PI / 2) % (2 * Math.PI) <
                 Math.PI
-                  ? "rotate(90) translate(0,14)"
-                  : "rotate(-270) translate(0,9)"
+                  ? "rotate(90) translate(0,10)"
+                  : "rotate(-270) translate(0,7)"
               )
               .text((d) => d.place)
           )
@@ -194,12 +194,11 @@ $(document).ready(function () {
 
     stringencySvg
       .selectAll("rect")
-      .attr("width", stringencyContainerWidth - 25)
       .data(dateStringency)
       .enter()
       .append("rect")
       .attr("x", function (d, i) {
-        return (stringencyContainerWidth / dateStringency.length) * i;
+        return (stringencyContainerWidth * 0.9 / dateStringency.length) * i;
       })
       .attr("y", function (d, i) {
         return 1;
@@ -207,7 +206,7 @@ $(document).ready(function () {
       .attr("width", function (d) {
         return stringencyContainerWidth / dateStringency.length;
       })
-      .attr("height", 20)
+      .attr("height", 30)
       .style("fill", function (d) {
         console.log(d[1]);
         return colour(d[1]);
