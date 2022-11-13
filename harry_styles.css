@@ -21,6 +21,7 @@ h1 {
 }
 
 #dateLabel {
+  font-family: 'League Gothic';
   font-style: bold;
   font-size: 6vw;
 }
@@ -34,23 +35,15 @@ a:link {
     color: lightblue;
   }
 
-#footer {
-   position: fixed;
-   bottom: 0;
-   width: 100%;
-   height: 10%;   /* Height of the footer */
-}
-
-
 /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
 .row.content {
   height: 100vh;
-  margin-top: 10%;;
 }
 
 .vizcol {
-    height: 50%;
-    background-color: white;
+  /* position: relative; */
+  height: 50%;
+  background-color: white;
 }
 
 .textbar {
@@ -58,14 +51,11 @@ a:link {
   height: 30%;
 }
 
-/* #vizdiv {
-  margin-top: 20%;
-} */
-
-footer {
-    background-color: rgb(43, 150, 180);
-    color: white;
-    padding: 10px;
+#viz {
+  /* margin-top: 20%; */
+  width: 100%; 
+  /* height: 100%; */
+  position: relative;
 }
 
 /* On small screens, set height to 'auto' */
@@ -81,8 +71,8 @@ footer {
 /* slider */
 
 .stringencyContainer {
-  /* width: 95%; */
-  /* padding: 5%; */
+  width: 95%;
+  padding: 5%;
 }
 
 .slider {

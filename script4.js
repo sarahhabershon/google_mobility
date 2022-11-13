@@ -23,8 +23,9 @@ $(document).ready(function () {
 
     // set the dimension variables
     let height = document.querySelector("#vizcol").offsetHeight;
+    console.log(height)
     let width = height;
-    let margin = 30;
+    let margin = 20;
     let innerRadius = 0;
     let outerRadius = width / 2 - margin;
     let startDate = "Tue Feb 18 2020";
@@ -52,10 +53,6 @@ $(document).ready(function () {
       .scaleSequential()
       .domain([0, 45])
       .interpolator(d3.interpolatePuBu);
-
-    // Legend(d3.scaleSequential([5, 45], d3.interpolatePuBu), {
-    //   title: "Response Stringency Index",
-    // });
 
     // set up the axes
     x = d3
@@ -118,7 +115,7 @@ $(document).ready(function () {
         ); 
 
     let svg = d3
-      .select("#vizdiv")
+      .select("#viz")
       .append("svg")
       .attr("viewBox", [-width / 2, -height / 2, width, height])
       .attr("stroke-linejoin", "round")
@@ -153,8 +150,6 @@ $(document).ready(function () {
     let iterator = 0;
 
     let update = function (i) {
-      console.log(uniqueDateStringency[i][0]);
-
       path
         .transition()
         .duration(400)
@@ -181,15 +176,11 @@ $(document).ready(function () {
     //    https://d3-graph-gallery.com/graph/density_slider.html
     let stringencyContainer = d3.select(".stringencyContainer");
     let stringencySvg = d3.select("#stringencysvg");
-    stringencyContainer.style.backgroundColor = "red";
+
 
     let stringencyContainerWidth = document.querySelector(".stringencyContainer").offsetWidth;
-    // let thumbWidth = document.querySelector(".slider::-webkit-slider-thumb").offsetWidth;
-    
+    console.log(stringencyContainerWidth)
 
-    // var x = stringencySvg.getAttribute("width");
-    // console.log(x)
-    var svgHeight = x + 30;
     console.log(stringencySvg)
 
     stringencySvg
@@ -198,13 +189,13 @@ $(document).ready(function () {
       .enter()
       .append("rect")
       .attr("x", function (d, i) {
-        return (stringencyContainerWidth * 0.9 / dateStringency.length) * i;
+        return ((stringencyContainerWidth * 0.9) / dateStringency.length) * i;
       })
       .attr("y", function (d, i) {
         return 1;
       })
       .attr("width", function (d) {
-        return stringencyContainerWidth / dateStringency.length;
+        return (stringencyContainerWidth * 0.9) / dateStringency.length;
       })
       .attr("height", 30)
       .style("fill", function (d) {
