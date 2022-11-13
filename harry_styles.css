@@ -1,11 +1,9 @@
-
 html {
     min-height: 100%;
   }
 
 
 /* text */
-
 
 body {
     font-family: 'Lora';
@@ -15,9 +13,9 @@ body {
 
 h1 {
     font-family: 'League Gothic';
-    font-size:15vw;
+    font-size: 15vw;
     margin-top: 30;
-    margin-bottom: 0;
+    margin-bottom: 5;
 }
 
 #dateLabel {
@@ -25,15 +23,6 @@ h1 {
   font-style: bold;
   font-size: 6vw;
 }
-
-a:link {
-    color: white;
-  }
-
-  /* visited link */
-  a:visited {
-    color: lightblue;
-  }
 
 /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
 .row.content {
@@ -52,21 +41,9 @@ a:link {
 }
 
 #viz {
-  /* margin-top: 20%; */
   width: 100%; 
-  /* height: 100%; */
   position: relative;
 }
-
-/* On small screens, set height to 'auto' */
-/* @media screen and (max-width: 767px) {
-  .textbar {
-    height: auto;
-    padding: 15px;
-    }
-  
-  .row.content {height: 80vh;} 
-} */
 
 /* slider */
 

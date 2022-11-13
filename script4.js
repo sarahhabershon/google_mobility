@@ -31,8 +31,6 @@ $(document).ready(function () {
     let startDate = "Tue Feb 18 2020";
 
     // create an array of unique dates to iterate over for the animation
-    // let uniqueDates = Array.from(new Set(data.map((d) => d.date)));
-
     let uniqueDateStringency = Array.from(
       new Set(dateStringency.map(JSON.stringify)),
       JSON.parse
@@ -47,7 +45,6 @@ $(document).ready(function () {
 
     // set the initial frame to the first date in the unique dates array
     let currentData = dataAt(startDate);
-    console.log(currentData);
 
     let colour = d3
       .scaleSequential()
@@ -114,6 +111,8 @@ $(document).ready(function () {
             )
         ); 
 
+    // create the visualisation
+
     let svg = d3
       .select("#viz")
       .append("svg")
@@ -147,7 +146,10 @@ $(document).ready(function () {
       .append("p")
       .text(uniqueDateStringency[0][0]);
 
-    let iterator = 0;
+
+
+    // option to animate, instead of using the slider. Keeping this commented out, but it does work.
+    // let iterator = 0;
 
     let update = function (i) {
       path
@@ -173,7 +175,8 @@ $(document).ready(function () {
     //   update(iterator);
     // }, 50);
 
-    //    https://d3-graph-gallery.com/graph/density_slider.html
+    // add the stringency indicator bar
+
     let stringencyContainer = d3.select(".stringencyContainer");
     let stringencySvg = d3.select("#stringencysvg");
 
@@ -203,6 +206,9 @@ $(document).ready(function () {
         return colour(d[1]);
       });
 
+    
+    // add control slider
+    
     d3.select("#mySlider")
       .attr("min", 0)
       .attr("max", uniqueDateStringency.length - 1)

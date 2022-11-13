@@ -17,12 +17,13 @@ home <- read_in_global %>%
   filter(is.na(sub_region_1),
         country_region_code == "GB") %>%
   select(date, transit_stations, workplaces, grocery_pharm, residential, retail_rec) %>%
-  mutate(transit_stations = rollmean(100+transit_stations, k = 7, fill = NA),
-         workplaces = rollmean(100+workplaces, k = 7, fill = NA),
-         retail_rec = rollmean(100+retail_rec, k = 7, fill = NA),
-         grocery_pharm = rollmean(100+grocery_pharm, k = 7, fill = NA),
-         residential = rollmean(100+residential, k = 7, fill = NA)) %>%
-  drop_na()
+  mutate("Transit stations" = rollmean(100+transit_stations, k = 7, fill = NA),
+         "Workplaces" = rollmean(100+workplaces, k = 7, fill = NA),
+         "Retail & recreation" = rollmean(100+retail_rec, k = 7, fill = NA),
+         "Grocery & pharmacy" = rollmean(100+grocery_pharm, k = 7, fill = NA),
+         "Residential" = rollmean(100+residential, k = 7, fill = NA)) %>%
+  drop_na() %>%
+  select(!c(transit_stations, workplaces, grocery_pharm, residential, retail_rec))
 
 risk_index_in <- read_csv("https://raw.githubusercontent.com/OxCGRT/covid-policy-tracker/master/data/United%20Kingdom/OxCGRT_GBR_latest.csv") 
 
@@ -41,27 +42,10 @@ home_long <-
   select(!c(RegionCode, Date))
 
 
-
-
-x <- toJSON(home_long, pretty=TRUE, flatten=TRUE, auto_unbox=FALSE)
-cat(x)
-
-home_long %>% 
-  group_by(date) %>%
-  summarise(across(everything(), list), .groups = "drop") %>% 
-  # nest(places = !StringencyIndex_Average_ForDisplay) %>%
-  jsonlite::toJSON(pretty=TRUE, auto_unbox=TRUE)
-
-# this one
-home_long_json <- home_long %>% 
-  nest(items = c(date, StringencyIndex_Average_ForDisplay))
+write_csv(home_long, "GB_data_long.csv")
 
 
 
-write(jsonlite::toJSON(home_long_json, pretty=TRUE), "long_json.json")
-
-
-write_csv(home_long, "GB_data_long_test.csv")
 
 data_check <- ggplot(home_long,
                      aes(x = date,
@@ -70,14 +54,6 @@ data_check <- ggplot(home_long,
   geom_line()
 
 data_check
-
-
-
-
-
-
-
-
 
 
 

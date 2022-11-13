@@ -1,9 +1,12 @@
-# googly_moobs
+# Google Mobility 
 
 Incomplete elements:
 
-1. legend for the colour key
-2. responsiveness
-3. problem aligning the slider with the stringency index
+1. legend for the colour key (coloured by the Oxford Stringency Index)
+2. responsiveness - best on mobile, desktop version is lumpy
+3. slider misaligned with the stringency index colour indicator bar
+4. sizing the visualisation svg to fit inside its div container at larger screen size
+
+
 
 
